@@ -6,8 +6,7 @@ from account.renderers import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from account.models import User
-from account.login import CustomLogin
-import re
+from django.contrib.auth import authenticate
 
 # Generate Token Manually
 def get_tokens_for_user(user):
@@ -44,8 +43,8 @@ class UserLoginView(APIView):
     else:
       user = User.objects.filter(phone_no=username)
     if user:
-      return True
-    return False
+      return user
+    return None
 
   # function to login user
   def post(self, request, format=None):
@@ -56,15 +55,12 @@ class UserLoginView(APIView):
     username = request.data['email']
     password = request.data['password']
     print("username={} password={}".format(username, password))
-    if self.userExists(username):
-      # if(self.isEmail(username)):
-      #   colName = 'email'
-      # else:
-      #   colName = 'phone_no'
-      # print("colName={}".format(colName))
-      print("user exists")
-      login = CustomLogin()
-      user = login.authenticate(request, username,password)
+    user = self.userExists(username);
+    if user:
+      email = user[0].email
+      phone_no = user[0].phone_no
+      print("email={} phone_no={}".format(email, phone_no))
+      user = authenticate(email=email,password=password)
       if user:
         token = get_tokens_for_user(user)
         return Response({'data': {'token': token}, 'success':True, 'client_msg':'Login Successful', 'dev_msg':'User logged in'}, status=status.HTTP_200_OK)
