@@ -28,10 +28,19 @@ python manage.py runserver
 - `git init`: Initialize a local git repository
 - `git add .`: Add all files to the staging area, ready to be committed. Staging means that you are preparing your files to be committed to the repository. To stage a specific file, use `git add <filename>`.
 - `git commit -m "commit message"`: Commit the files that are in the staging area with a message describing the changes.
+- `git log`: View the commit history (all time) for the current branch. To view the commit history for all branches, use `git log --all`.
+- `git status`: View the status of the working directory and the staging area.
+- `git remote add <name> <remote repository URL>`: Add a remote repository to the local repository.
+- `git remote -v`: View the remote repositories that are connected to the local repository.
+- `git remote remove origin`: Remove the remote repository from the local repository.
+- `git branch`: View the branches that are available locally.
+
 
     ### commit messages
-    0 Initial commit
+    v0 Initial commit
     |
-
     |
+    |
+    v1 created migration
+    | Readme change (changes)
     |
