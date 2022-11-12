@@ -34,6 +34,7 @@ python manage.py runserver
 - `git remote -v`: View the remote repositories that are connected to the local repository.
 - `git remote remove origin`: Remove the remote repository from the local repository.
 - `git branch`: View the branches that are available locally.
+- `git branch <branch name>`: Creates a new branch. This branch is a copy of the current branch.
 
 
     ### commit messages
@@ -44,3 +45,9 @@ python manage.py runserver
     v1 created migration
     | Readme change (changes)
     |
+    main = master
+    |
+    |    feature
+    |    |
+    |    |
+       
