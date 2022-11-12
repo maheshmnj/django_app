@@ -2,11 +2,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from account.serializers import UserPasswordResetSerializer, UserLoginSerializer, UserProfileSerializer, UserRegistrationSerializer, UserChangePasswordSerializer, SendPasswordResetEmailSerializer
-from django.contrib.auth import authenticate
 from account.renderers import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from account.models import User
+from account.login import CustomLogin
 import re
 
 # Generate Token Manually
@@ -63,7 +63,8 @@ class UserLoginView(APIView):
       #   colName = 'phone_no'
       # print("colName={}".format(colName))
       print("user exists")
-      user = authenticate(request, email=username,password=password)
+      login = CustomLogin()
+      user = login.authenticate(request, username,password)
       if user:
         token = get_tokens_for_user(user)
         return Response({'data': {'token': token}, 'success':True, 'client_msg':'Login Successful', 'dev_msg':'User logged in'}, status=status.HTTP_200_OK)

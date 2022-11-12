@@ -96,8 +96,8 @@ REST_FRAMEWORK = {
 }
 
 AUTHENTICATION_BACKENDS = (
-    'account.login.CustomLogin',
     'django.contrib.auth.backends.ModelBackend',
+    'account.login.CustomLogin',
 )
 
 # Password validation
