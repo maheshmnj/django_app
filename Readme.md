@@ -35,6 +35,8 @@ python manage.py runserver
 - `git remote remove origin`: Remove the remote repository from the local repository.
 - `git branch`: View the branches that are available locally.
 - `git branch <branch name>`: Creates a new branch. This branch is a copy of the current branch.
+- `git checkout <branch name>`: Switch to the specified branch and update the working directory.
+- `git checkout -b <branch name>`: Create a new branch and switch to it. (shortform for above two commands)
 
 
     ### commit messages
@@ -47,7 +49,8 @@ python manage.py runserver
     |
     main = master
     |
-    |    feature
+    |--- feature (remote)
     |    |
     |    |
-       
+         updated readme
+        
