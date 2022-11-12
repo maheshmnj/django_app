@@ -52,4 +52,3 @@ python manage.py runserver
     |    |
     |    |
          updated readme
-        

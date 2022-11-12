@@ -90,11 +90,15 @@ DATABASES = {
 # JWT Configuration
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'account.login.CustomLogin',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
    
 }
+
+AUTHENTICATION_BACKENDS = (
+    'account.login.CustomLogin',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
