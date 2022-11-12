@@ -51,33 +51,25 @@ class UserLoginView(APIView):
     # serializer = UserLoginSerializer(data=request.data)
     # if serializer.is_valid(raise_exception=True):
     # check if email or phone no exists
-    # try:
-    username = request.data['email']
-    password = request.data['password']
-    print("username={} password={}".format(username, password))
-    user = self.userExists(username);
-    if user:
-      email = user[0].email
-      phone_no = user[0].phone_no
-      print("email={} phone_no={}".format(email, phone_no))
-      user = authenticate(email=email,password=password)
+    try:
+      username = request.data['email']
+      password = request.data['password']
+      user = self.userExists(username);
       if user:
-        token = get_tokens_for_user(user)
-        return Response({'data': {'token': token}, 'success':True, 'client_msg':'Login Successful', 'dev_msg':'User logged in'}, status=status.HTTP_200_OK)
-      return Response({'data': {}, 'success':False, 'client_msg':'Invalid Credentials', 'dev_msg':'User not logged in'}, status=status.HTTP_400_BAD_REQUEST)
-    else:
+        email = user[0].email
+        phone_no = user[0].phone_no
+        loggedInUser = authenticate(email=email,password=password)
+        if(loggedInUser):
+          token = get_tokens_for_user(loggedInUser)
+          return Response({'data': {'token': token}, 'success':True, 'client_msg':'Login Successful', 'dev_msg':'User logged in'}, status=status.HTTP_200_OK)
+        else:
+          return Response({'data': {}, 'success':False, 'client_msg':'Invalid Credentials', 'dev_msg':'User not logged in'}, status=status.HTTP_400_BAD_REQUEST)
+      else:
+        err_resp = {'success':False,'errors':{'email': ['User does not exist']}}
+        return Response(err_resp, status=status.HTTP_404_NOT_FOUND)
+    except:
       err_resp = {'success':False,'errors':{'email': ['User does not exist']}}
       return Response(err_resp, status=status.HTTP_404_NOT_FOUND)
-    #     user = authenticate(email=username, password=password)
-    #     if user:
-    #       token = get_tokens_for_user(user)
-    #       success_resp = {'data': {'token': token}, 'success':True, 'client_msg':'Login Successful', 'dev_msg':'Login Successful'}
-    #       return Response(success_resp, status=status.HTTP_200_OK)
-    #     else:
-    #       print("invalid")
-    #       error_resp = {'data': {}, 'success':False, 'client_msg':'Invalid Password', 'dev_msg':'Invalid Password'}
-    #       return Response(error_resp, status=status.HTTP_400_BAD_REQUEST)
-    # except:
    
 
 def validateEmailAddress(email):
