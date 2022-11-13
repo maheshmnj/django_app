@@ -39,7 +39,7 @@ class UserLoginView(APIView):
   def userExists(self, username):
     isEmail = self.isEmail(username)
     if isEmail:
-      user = User.objects.filter(email=username)
+      user = User.objects.filter(email=username) # returns list of rows
     else:
       user = User.objects.filter(phone_no=username)
     if user:
@@ -48,9 +48,6 @@ class UserLoginView(APIView):
 
   # function to login user
   def post(self, request, format=None):
-    # serializer = UserLoginSerializer(data=request.data)
-    # if serializer.is_valid(raise_exception=True):
-    # check if email or phone no exists
     try:
       username = request.data['email']
       password = request.data['password']
@@ -65,12 +62,16 @@ class UserLoginView(APIView):
         else:
           return Response({'data': {}, 'success':False, 'client_msg':'Invalid Credentials', 'dev_msg':'User not logged in'}, status=status.HTTP_400_BAD_REQUEST)
       else:
-        err_resp = {'success':False,'errors':{'email': ['User does not exist']}}
-        return Response(err_resp, status=status.HTTP_404_NOT_FOUND)
+        isEmail = self.isEmail(username)
+        if(isEmail):
+          err_resp = {'success':False,'errors':{'email': ['Email does not exist']}}
+          return Response(err_resp, status=status.HTTP_404_NOT_FOUND)
+        else:
+          err_resp = {'success':False,'errors':{'phone_no': ['Phone no does not exist']}}
+          return Response(err_resp, status=status.HTTP_404_NOT_FOUND)
     except:
       err_resp = {'success':False,'errors':{'email': ['User does not exist']}}
       return Response(err_resp, status=status.HTTP_404_NOT_FOUND)
-   
 
 def validateEmailAddress(email):
   # Regex to check valid email
